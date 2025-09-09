@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Orders API</title>
+</head>
+<body>
+    <h1>Send Test Order</h1>
+    <button id="sendOrder">Send Order</button>
+
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById('sendOrder').addEventListener('click', () => {
+            const orderData = {
+                client: { name: "Alan Turing" },
+                identity: "Alan Turing",
+                contact_point: "123 Enigma Ave, Bletchley Park, UK",
+                contents: [
+                    { label: "Smindle ElePHPant plushie", kind: "single", cost: 295.45, meta: {} },
+                    { label: "Syntax & Chill", kind: "recurring", cost: 175.00, meta: { frequency: "weekly", priority: "high" } }
+                ]
+            };
+
+            fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                document.getElementById('response').textContent = 'Error: ' + err;
+            });
+        });
+    </script>
+</body>
+</html>
